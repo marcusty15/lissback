@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const express = require('express');
-const users = require('./routes/userRoutes')
+const users = require('./Routes/userRoutes')
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mailRouter = require('./Routes/mailRouter');
@@ -10,7 +10,12 @@ const mailRouter = require('./Routes/mailRouter');
 const app = express()
 
 
-app.use(cors())
+const corsOptions = {
+    origin: "*",
+    credentials: true,
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
+  app.use(cors(corsOptions));
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.set('view engine', 'ejs')

@@ -2,7 +2,7 @@ require('dotenv').config()
 
 
 const nodemailer = require('nodemailer');
-const sendEmail = (to, nombre) => new Promise((res, rej)=>{
+const sendEmail = (nombre, apellido, email, telefono ) => new Promise((res, rej)=>{
     let transporter = nodemailer.createTransport({
         host: 'mail.lissetalbarracin.com',
         port: 465,
@@ -37,8 +37,8 @@ const sendEmail = (to, nombre) => new Promise((res, rej)=>{
 
     let mailOptions = {
         from: 'encuentros@lissetalbarracin.com',
-        to,
-        subject: `Gracias por registrate ${nombre}`,
+        email,
+        subject: `Gracias por registrate ${nombre} ${apellido}`,
         html: msg,
         attachments:[{
             filename: 'RESPUESTA-WEB.png',
@@ -59,10 +59,10 @@ const sendEmail = (to, nombre) => new Promise((res, rej)=>{
 })
 
 const enviarCorreo = async (req, res)=>{
-    const {para, nombre} = req.body
+    const {nombre, apellido,email, telefono } = req.body
 
     try {
-        const email = await sendEmail(para, nombre)
+        const email = await sendEmail(nombre, apellido, email, telefono )
         return res.send({
             enviado: true,
             email
