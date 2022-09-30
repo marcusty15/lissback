@@ -1,21 +1,31 @@
-require('dotenv').config()
+require("dotenv").config();
 
-
-const nodemailer = require('nodemailer');
-const sendEmail = (nombre, apellido, email, telefono ) => new Promise((res, rej)=>{
+const nodemailer = require("nodemailer");
+const sendEmail = (
+  nombre,
+  apellido,
+  email,
+  telefono,
+  orderid,
+  paypal,
+  zelle,
+  bizum,
+  wise,
+  binance
+) =>
+  new Promise((res, rej) => {
     let transporter = nodemailer.createTransport({
-        host: 'mail.lissetalbarracin.com',
-        port: 465,
-        secure: true,
-        auth:{
-            user: process.env.USER,
-            pass: process.env.PASSWORD
-
-        },
-        tls: {
-            rejectUnauthorized: false
-        }
-    })
+      host: "mail.lissetalbarracin.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.USER,
+        pass: process.env.PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
 
     let msg = `
     <!DOCTYPE html>
@@ -33,48 +43,69 @@ const sendEmail = (nombre, apellido, email, telefono ) => new Promise((res, rej)
         </div>
     </div>
 </body>
-</html>`
+</html>`;
 
     let mailOptions = {
-        from: 'encuentros@lissetalbarracin.com',
-        email,
-        subject: `Gracias por registrate ${nombre} ${apellido}`,
-        html: msg,
-        attachments:[{
-            filename: 'RESPUESTA-WEB.png',
-            path: './public/img/RESPUESTA-WEB.png',
-            cid: 'res'
-        }
-    ]
-        
-    }
-   
-    transporter.sendMail(mailOptions,  (err, data)=>{
-        if(err){
-            rej(err)
-        } else {
-            res(true)
-        }
-    })
-})
+      from: "encuentros@lissetalbarracin.com",
+      to: `${email}`,
+      subject: `Gracias por registrate ${nombre} ${apellido}`,
+      html: msg,
+      attachments: [
+        {
+          filename: "3.png",
+          path: "./public/img/3.png",
+          cid: "res",
+        },
+      ],
+    };
 
-const enviarCorreo = async (req, res)=>{
-    const {nombre, apellido,email, telefono } = req.body
+    let mailAdmin = {
+      from: "encuentros@lissetalbarracin.com",
+      to: "encuentros@lissetalbarracin.com",
+      subject: "nuevo registro de evento",
+      text: `se ha registrado el siguiente usuario: ${nombre} ${apellido}, telefono: ${telefono}, email: ${email}, Pago por medio de: Paypal: ${paypal}, Zelle: ${zelle}, Bizum: ${bizum}, Wise: ${wise}, binance ${binance}, orderID o numero de transaccion es: ${orderid}`
+    };
 
-    try {
-        const email = await sendEmail(nombre, apellido, email, telefono )
-        return res.send({
-            enviado: true,
-            email
-        })
-    } catch (error) {
-        console.log(error)
-        res.send({
-            enviado: false
-        })
-    }
-}
+    transporter.sendMail(mailOptions, (err, data) => {
+      if (err) {
+        rej(err);
+      } else {
+        res(true);
+      }
+    });
+    transporter.sendMail(mailAdmin, (err, data) => {
+      if (err) {
+        rej(err);
+      } else {
+        res(true);
+      }
+    });
+  });
+
+const enviarCorreo = async (req, res) => {
+  const { nombre, apellido, email, telefono, orderid, paypal,
+    zelle,
+    bizum,
+    wise, binance } = req.body;
+
+  try {
+    const data = await sendEmail(nombre, apellido, email, telefono, orderid, paypal,
+        zelle,
+        bizum,
+        wise,
+        binance);
+    return res.send({
+      enviado: true,
+      data,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      enviado: false,
+    });
+  }
+};
 
 module.exports = {
-    enviarCorreo
-}
+  enviarCorreo,
+};
