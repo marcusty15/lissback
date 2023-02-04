@@ -5,6 +5,9 @@ const users = require('./Routes/userRoutes')
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mailRouter = require('./Routes/mailRouter');
+const mail = require('./Routes/mailRouter copy');
+const mail2 = require('./Routes/mailRouter copy 2');
+
 
 
 const app = express()
@@ -19,6 +22,8 @@ const corsOptions = {
 app.use(express.json())
 app.use('/users', users)
 app.use('/email', mailRouter)
+app.use('/hom', mail)
+app.use('/enc', mail2)
 
 app.use(express.static(__dirname + '/public'))
 
