@@ -11,7 +11,8 @@ const sendEmail = (
   zelle,
   bizum,
   wise,
-  binance
+  binance,
+  comentario
 ) =>
   new Promise((res, rej) => {
     let transporter = nodemailer.createTransport({
@@ -38,8 +39,13 @@ const sendEmail = (
 </head>
 <body>
     <div style="width: 100%; background-color: white;">
+    <p>Estoy muy contenta de iniciar esta segunda edición del grupo de lectura y meditación, contenta de poder compartir este poderoso libro que nos lleva a la profundidad de nuestro Ser. </p>
+    <br></br>
+    <p>Te espero en la primera sesión el sábado 3 de diciembre✨</p>
+    <br></br>
+    <p>¡Un fuerte abrazo! </p>
         <div style="padding: 20px 10px 20px 10px;  ">
-            <img style="width: 600px;" src='cid:res' alt=""/>
+            <img style="width: 600px;" src='cid:lectura' alt=""/>
         </div>
     </div>
 </body>
@@ -52,9 +58,9 @@ const sendEmail = (
       html: msg,
       attachments: [
         {
-          filename: "3.png",
-          path: "./public/img/3.png",
-          cid: "res",
+          filename: "lectura.png",
+          path: "./public/img/lectura.png",
+          cid: "lectura",
         },
       ],
     };
@@ -63,7 +69,7 @@ const sendEmail = (
       from: "encuentros@lissetalbarracin.com",
       to: "encuentros@lissetalbarracin.com",
       subject: "nuevo registro de evento",
-      text: `se ha registrado el siguiente usuario: ${nombre} ${apellido}, telefono: ${telefono}, email: ${email}, Pago por medio de: Paypal: ${paypal}, Zelle: ${zelle}, Bizum: ${bizum}, Wise: ${wise}, binance ${binance}, orderID o numero de transaccion es: ${orderid}`
+      text: `se ha registrado el siguiente usuario: ${nombre} ${apellido}, telefono: ${telefono}, email: ${email}, Pago por medio de: Paypal: ${paypal}, Zelle: ${zelle}, Bizum: ${bizum}, Wise: ${wise}, binance ${binance}, orderID o numero de transaccion es: ${orderid}, comentario: ${comentario}`
     };
 
     transporter.sendMail(mailOptions, (err, data) => {
@@ -86,14 +92,14 @@ const enviarCorreo = async (req, res) => {
   const { nombre, apellido, email, telefono, orderid, paypal,
     zelle,
     bizum,
-    wise, binance } = req.body;
+    wise, binance, comentario } = req.body;
 
   try {
     const data = await sendEmail(nombre, apellido, email, telefono, orderid, paypal,
         zelle,
         bizum,
         wise,
-        binance);
+        binance, comentario);
     return res.send({
       enviado: true,
       data,
