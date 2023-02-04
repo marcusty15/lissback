@@ -1,5 +1,4 @@
 require('dotenv').config()
-
 const express = require('express');
 const users = require('./Routes/userRoutes')
 const cors = require('cors');
@@ -7,9 +6,7 @@ const bodyParser = require('body-parser');
 const mailRouter = require('./Routes/mailRouter');
 const mail = require('./Routes/mailRouter copy');
 const mail2 = require('./Routes/mailRouter copy 2');
-
-
-
+const recursosAudios = require('./Routes/recursosAudios')
 const app = express()
 
 
@@ -20,15 +17,12 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 app.use(express.json())
-app.use('/', (req, res) =>
-{
-    res.send('Hola Mundo')
-})
-
+// app.use('/', (req, res) => res.send('Hola Mundo'))
 app.use('/users', users)
 app.use('/email', mailRouter)
 app.use('/hom', mail)
 app.use('/enc', mail2)
+app.use('/recursosAudios', recursosAudios)
 
 app.use(express.static(__dirname + '/public'))
 
