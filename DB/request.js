@@ -7,10 +7,9 @@ require('dotenv').config();
 module.exports.request = (query) => new Promise((res, rej) => {
     const connection = mysql.createConnection({
         host: 'localhost',
-        port: 3306,
-        user: 'root' ,
-        password:  '',
-        database:'lissproject' 
+        user: 'transfo3_liss' ,
+        password:  'Troconis1!',
+        database:'transfo3_liss' 
     })
 
     connection.query(query, (error,data,fields)=>{
