@@ -7,6 +7,7 @@ const mailRouter = require('./Routes/mailRouter');
 const mail = require('./Routes/mailRouter copy');
 const mail2 = require('./Routes/mailRouter copy 2');
 const recursosAudios = require('./Routes/recursosAudios')
+const coment = require('./Routes/coment');
 const app = express()
 
 
@@ -23,6 +24,7 @@ app.use('/email', mailRouter)
 app.use('/hom', mail)
 app.use('/enc', mail2)
 app.use('/recursosAudios', recursosAudios)
+app.use('/comentarios', coment)
 
 app.use(express.static(__dirname + '/public'))
 
